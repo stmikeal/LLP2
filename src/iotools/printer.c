@@ -22,26 +22,30 @@ static void print_filter(struct filter_list *list) {
     printf("-FILTERS\n");
     size_t level = 1;
     if (!list) return;
-    struct comparator_list *comp_list = list->value->comparators;
+    struct comparator_list *comp_list;
     while (list) {
+
         printf("--FILTER: %zu\n", level++);
         printf("--IS NEGATIVE: %d\n", list->value->negative);
         size_t comp_level = 1;
-        printf("---COMPARATORS---\n");
-        while (comp_list) {
-            printf("----COMPARATOR: %zu\n", comp_level++);
-            printf("----IS NEGATIVE: %d\n", comp_list->value->negative);
-            if (comp_list->value->true) {
-                printf("----COMPARATOR IS TRUE\n");
-            } else {
-                print_operator(comp_list->value->op1, 1);
-                printf("----OPERATION: %c\n", comp_list->value->operation);
-                print_operator(comp_list->value->op2, 2);
+        comp_list = list->value->comparators;
+        if (comp_list) {
+            printf("---COMPARATORS---\n");
+            while (comp_list) {
+                printf("----COMPARATOR: %zu\n", comp_level++);
+                printf("----IS NEGATIVE: %d\n", comp_list->value->negative);
+                if (comp_list->value->true) {
+                    printf("----COMPARATOR IS TRUE\n");
+                } else {
+                    print_operator(comp_list->value->op1, 1);
+                    printf("----OPERATION: %c\n", comp_list->value->operation);
+                    print_operator(comp_list->value->op2, 2);
+                }
+                printf("----END OF COMPARATOR\n");
+                comp_list = comp_list->next;
             }
-            printf("----END OF COMPARATOR\n");
-            comp_list = comp_list->next;
+            printf("---END OF COMPARATORS\n");
         }
-        printf("---END OF COMPARATORS\n");
         printf("--END OF FILTER\n");
         list = list->next;
     }

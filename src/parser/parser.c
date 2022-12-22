@@ -94,11 +94,8 @@ struct operator *read_operator(char **string){
     return op;
 }
 
-struct filter_list *create_wrap_filter_list(struct comparator *comp, uint8_t negative){
-    struct comparator_list *cl = create_comparator_list();
-    cl->value = comp;
+struct filter_list *create_wrap_filter_list(uint8_t negative){
     struct filter *f = create_filter(negative);
-    f->comparators = cl;
     struct filter_list *fl = create_filter_list();
     fl->value = f;
     return fl;
@@ -128,10 +125,12 @@ enum states attribute_do(char **string, struct list_level *level) {
     struct comparator *comp;
     if (**string && **string=='!' && *(*string)++) negative++;
     if (**string =='['){
+        struct filter_list *fl = create_wrap_filter_list(negative);
+        fl->next = level->filters;
+        level->filters = fl;
         while(**string != ']' && *(*string)++) {
             comp = read_filter(string);
-            if (!level->filters) level->filters = create_wrap_filter_list(comp, negative);
-            else append_comp(level->filters, comp);
+            append_comp(level->filters, comp);
             if (**string != '|' && **string != ']' && *(*string)++) return S_ERROR;
         }
         (*string)++;
