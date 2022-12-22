@@ -34,5 +34,9 @@ int main(){
         view->tree = cur_level;
     }
     print_result(current_state, for_parse, view);
+    printf("View ram: ");
+    print_ram();
+    printf("Full ram: ");
+    print_ram();
     return 0;
 }

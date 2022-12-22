@@ -79,7 +79,7 @@ struct operator *read_operator(char **string){
         while (temp_p[len] && (temp_p[len] >= 'a' && temp_p[len] <= 'z' || temp_p[len] >= 'A' && temp_p[len] <= 'Z')){
             len++;
         }
-        char *value = malloc(sizeof(char) * len);
+        char *value = test_malloc(sizeof(char) * len);
         temp_p = *string;
         for (size_t iter = 0; iter < len; iter++){
             value[iter] = temp_p[iter];

@@ -47,6 +47,9 @@ union types {
     double real;
 } ;
 
+void *test_malloc(size_t size_of);
+void *print_ram();
+
 struct operator {
     uint8_t field;
     enum field_types type;
